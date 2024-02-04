@@ -60,4 +60,7 @@ public class RoomManager {
     public boolean save(Room room){
         return this.roomDao.save(room);
     }
+    public boolean stock(Room room){
+        return this.roomDao.stock(room);
+    }
 }

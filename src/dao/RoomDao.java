@@ -127,6 +127,18 @@ public class RoomDao {
         }
         return true;
     }
+    public boolean stock(Room room){
+        String query = "UPDATE public.room SET stock = ? WHERE id =? ";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1,(room.getStock()-1));
+            pr.setInt(2,room.getId());
+            return pr.executeUpdate() != -1;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
 
 
 }

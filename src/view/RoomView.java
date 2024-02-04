@@ -71,7 +71,12 @@ public class RoomView extends Layout {
                     finishDate,
                     adult,
                     child);
-
+bookView.addWindowListener(new WindowAdapter() {
+    @Override
+    public void windowClosed(WindowEvent e) {
+        loadRoomTable(hotel);
+    }
+});
         });
         this.tbl_room.setComponentPopupMenu(this.room_menu);
 

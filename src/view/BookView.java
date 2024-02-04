@@ -2,6 +2,7 @@ package view;
 
 import business.BookManager;
 import business.PansionManager;
+import business.RoomManager;
 import business.SeasonManager;
 import core.Helper;
 import entity.Book;
@@ -37,6 +38,7 @@ public class BookView extends Layout {
     PansionManager pansionManager;
     private Book book;
     double total;
+    RoomManager roomManager;
 
     public BookView(Room room, String startDate, String finishDate, int adult, int child) {
 
@@ -46,6 +48,7 @@ public class BookView extends Layout {
         this.room = room;
         this.bookManager = new BookManager();
         book = new Book();
+        this.roomManager = new RoomManager();
 
 
         loadBookComponent(room, startDate, finishDate, adult, child);
@@ -237,8 +240,9 @@ public class BookView extends Layout {
             book.setFinishDate(finishDate);
             book.setPrice(total);
             book.setNote(fld_note.getText());
-            if (this.bookManager.save(book)) {
+            if (this.bookManager.save(book)&& this.roomManager.stock(room)) {
                 Helper.showMsg("done");
+
             } else {
                 Helper.showMsg("error");
             }
