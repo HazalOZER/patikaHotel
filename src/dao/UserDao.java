@@ -63,28 +63,30 @@ public class UserDao {
         }
         return userList;
     }
+
     public boolean save(User user) {
 
-                String query = "INSERT INTO public.user " +
-                        "(" +
-                        "username, " +
-                        "pass, " +
-                        "role " +
-                        ")" +
-                        " VALUES (?,?,?)";
-                try {
-                    PreparedStatement pr = this.con.prepareStatement(query);
-                    pr.setString(1, user.getUsername());
-                    pr.setString(2, user.getPassword());
-                    pr.setString(3, user.getRole().toString());
+        String query = "INSERT INTO public.user " +
+                "(" +
+                "username, " +
+                "pass, " +
+                "role " +
+                ")" +
+                " VALUES (?,?,?)";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, user.getUsername());
+            pr.setString(2, user.getPassword());
+            pr.setString(3, user.getRole().toString());
 
 
-                    return pr.executeUpdate() != -1;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public boolean update(User user) {
         String query = "UPDATE public.user SET " +
                 "username = ? , " +
@@ -96,13 +98,14 @@ public class UserDao {
             pr.setString(1, user.getUsername());
             pr.setString(2, user.getPassword());
             pr.setString(3, user.getRole().toString());
-                     pr.setInt(4, user.getId());
+            pr.setInt(4, user.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return true;
     }
+
     public boolean delete(int id) {
 
         String query = "DELETE FROM public.user WHERE id = ?";
@@ -117,6 +120,7 @@ public class UserDao {
 
         return true;
     }
+
     public User getById(int id) {
         User obj = null;
         String query = "SELECT * FROM public.user WHERE id = ?";
@@ -134,7 +138,7 @@ public class UserDao {
         return obj;
     }
 
-    public boolean hasUser(User user){
+    public boolean hasUser(User user) {
         String query = "SELECT * FROM public.user WHERE username = '" + user.getUsername() + "'";
         if (!this.selectByQuery(query).isEmpty()) {
             Helper.showMsg("has");
@@ -142,22 +146,23 @@ public class UserDao {
         }
         return false;
     }
-public ArrayList<User> findByRole(String userSearchRole){
-        ArrayList<User> userList = new ArrayList<>();
-        String query = "SELECT * FROM public.user WHERE role = ? '"+userSearchRole+"'";
 
-        try{
+    public ArrayList<User> findByRole(String userSearchRole) {
+        ArrayList<User> userList = new ArrayList<>();
+        String query = "SELECT * FROM public.user WHERE role = ? '" + userSearchRole + "'";
+
+        try {
 
             ResultSet rs = this.con.createStatement().executeQuery(query);
 
-            while(rs.next()){
+            while (rs.next()) {
                 userList.add(this.match(rs));
             }
 
-                    }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return userList;
-}
+    }
 
 }

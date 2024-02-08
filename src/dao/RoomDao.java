@@ -1,7 +1,6 @@
 package dao;
 
 import core.Db;
-import entity.Hotel;
 import entity.Room;
 
 import java.sql.Connection;
@@ -127,7 +126,7 @@ public class RoomDao {
         }
         return true;
     }
-    public boolean stock(Room room){
+    public boolean decreaseStock(Room room){
         String query = "UPDATE public.room SET stock = ? WHERE id =? ";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
@@ -138,6 +137,19 @@ public class RoomDao {
             e.printStackTrace();
         }
         return true;
+    }
+    public boolean increaseStock( Room room) {
+        String query = "UPDATE public.room SET stock = ? WHERE id =? ";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1,(room.getStock()+1));
+            pr.setInt(2,room.getId());
+            return pr.executeUpdate() != -1;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+
     }
 
 

@@ -14,6 +14,8 @@ public class Book {
     private String finishDate;
     private String pension;
     private double price;
+    private int adult;
+    private int child;
     public Book(){
 
     }
@@ -104,5 +106,21 @@ public class Book {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getAdult() {
+        return adult;
+    }
+
+    public void setAdult(int adult) {
+        this.adult = adult;
+    }
+
+    public int getChild() {
+        return child;
+    }
+
+    public void setChild(int child) {
+        this.child = child;
     }
 }

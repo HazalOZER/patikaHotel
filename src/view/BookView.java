@@ -40,28 +40,41 @@ public class BookView extends Layout {
     double total;
     RoomManager roomManager;
 
-    public BookView(Room room, String startDate, String finishDate, int adult, int child) {
+    public BookView(Book book, Room room, String startDate, String finishDate, int adult, int child) {
 
 
         add(container);
         guiInitilaze(1000, 650);
         this.room = room;
         this.bookManager = new BookManager();
-        book = new Book();
+        this.book = book;
         this.roomManager = new RoomManager();
+        System.out.println("////////////////////////");
 
 
-        loadBookComponent(room, startDate, finishDate, adult, child);
+        loadBookComponent(book, room, startDate, finishDate, adult, child);
 
     }
 
-    public void loadBookComponent(Room room, String startDate, String finishDate, int adult, int child) {
+    public void loadBookComponent(Book book, Room room, String startDate, String finishDate, int adult, int child) {
+
+
+///////////////////////////////////////////////////////////
+        if (this.book.getId() != 0) {
+            this.fld_name.setText(this.book.getName());
+            this.fld_tcno.setText(this.book.getTcno());
+            this.fld_mail.setText(this.book.getMail());
+            this.fld_mpno.setText(this.book.getMpno());
+            this.fld_note.setText(this.book.getNote());
+        }
+/////////////////////////////////////////////////////////////
+
 
         //Oda Bilgileri
 
         String lblRoomInfo = "Oda :" + room.getType().toString() + " Metrekare:" + room.getSquareMeter() + "\n";
-        ArrayList<String> roomInfo = new ArrayList<>();
 
+        ArrayList<String> roomInfo = new ArrayList<>();
 
         if (room.isProjection()) {
             roomInfo.add(" Projeksiyon");
@@ -129,7 +142,9 @@ public class BookView extends Layout {
 
 
         this.pansionManager = new PansionManager();
+
         ArrayList<Pansion> pansions = pansionManager.findAllByHotelId(room.getOtelId());
+
         this.pansion = pansions.get(0);
 
 
@@ -157,25 +172,14 @@ public class BookView extends Layout {
 
 
         //Kaydetme
-
-        /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date convertedStart = new Date();
-        Date convertedEnd = new Date();
-        try {
-            convertedStart = dateFormat.parse(startDate);
-            convertedEnd=dateFormat.parse(finishDate);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        int dateNum = 1;
+        //FARK
+        if (book.getId() == 0) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate first = LocalDate.parse(startDate, formatter);
+            LocalDate last = LocalDate.parse(finishDate, formatter);
+            dateNum = (int) ChronoUnit.DAYS.between(first, last);
         }
-        Long fark=convertedEnd.getTime()-convertedStart.getTime();
-        System.out.println("hashdhasd "+fark/60/60/24/1000);*/
-//FARK
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate first = LocalDate.parse(startDate, formatter);
-        LocalDate last = LocalDate.parse(finishDate, formatter);
-        int dateNum = (int) ChronoUnit.DAYS.between(first, last);
-        System.out.println(dateNum);////////////////////////////////
 
 
         this.total = ((room.getAdultPrice() * adult) +
@@ -183,68 +187,94 @@ public class BookView extends Layout {
 
 
         //Fiyat bilgisi
-        ArrayList<String> priceInfo =new ArrayList<>();
+        ArrayList<String> priceInfo = new ArrayList<>();
         if (pansion.isUltraAllInc()) {
-            priceInfo.add("Ultra Her Şey Dahil: "+(total*1.6));
+            priceInfo.add("Ultra Her Şey Dahil: " + (total * 1.6));
         }
         if (pansion.isAllInc()) {
-            priceInfo.add("Her Şey Dahil: " +(total*1.5));
+            priceInfo.add("Her Şey Dahil: " + (total * 1.5));
         }
         if (pansion.isFullBoard()) {
-            priceInfo.add("Tam Pansiyon: " +(total*1.3));
+            priceInfo.add("Tam Pansiyon: " + (total * 1.3));
         }
         if (pansion.isHalfBoard()) {
-            priceInfo.add("Yarım Pansiyon: " +(total*1.2));
+            priceInfo.add("Yarım Pansiyon: " + (total * 1.2));
         }
         if (pansion.isFullBoardEAlcohol()) {
-            priceInfo.add("Alkolsüz Her Şey Dahil: " +(total*1.4));
+            priceInfo.add("Alkolsüz Her Şey Dahil: " + (total * 1.4));
         }
         if (pansion.isBedBreakfast()) {
-            priceInfo.add("Oda Kahvaltı: " +(total*1.1));
+            priceInfo.add("Oda Kahvaltı: " + (total * 1.1));
         }
         if (pansion.isOnlyRoom()) {
-            priceInfo.add("Sadece Oda: " +(total));
+            priceInfo.add("Sadece Oda: " + (total));
         }
-        String priceAllInfo = String.join(", ",priceInfo);
+        String priceAllInfo = String.join(", ", priceInfo);
 
         lbl_price_info.setText(priceAllInfo);
 
-
-
-
         btn_book.addActionListener(e -> {
-            if (cmb_pension.getSelectedItem().equals("Sadece Oda")) {
-                total *= 1;
-            } else if (cmb_pension.getSelectedItem().equals("Oda Kahvaltı")) {
-                total *= 1.1;
-            } else if (cmb_pension.getSelectedItem().equals("Yarım Pansiyon")) {
-                total *= 1.2;
-            } else if (cmb_pension.getSelectedItem().equals("Tam Pansiyon")) {
-                total *= 1.3;
-            } else if (cmb_pension.getSelectedItem().equals("Alkolsüz Her Şey Dahil")) {
-                total *= 1.4;
-            } else if (cmb_pension.getSelectedItem().equals("Her Şey Dahil")) {
-                total *= 1.5;
-            } else if (cmb_pension.getSelectedItem().equals("Ultra Her Şey Dahil")) {
-                total *= 1.6;
-            }
-            System.out.println(total);/////
-            System.out.println(cmb_pension.getSelectedItem().toString());
-            book.setRoomId(room.getId());
-            book.setName(fld_name.getText());
-            book.setMail(fld_mail.getText());
-            book.setMpno(fld_mpno.getText());
-            book.setTcno(fld_tcno.getText());
-            book.setPension(cmb_pension.getSelectedItem().toString());
-            book.setStartDate(startDate);
-            book.setFinishDate(finishDate);
-            book.setPrice(total);
-            book.setNote(fld_note.getText());
-            if (this.bookManager.save(book)&& this.roomManager.stock(room)) {
-                Helper.showMsg("done");
 
+            if (Helper.isFieldListEmty(new JTextField[]{this.fld_name, this.fld_tcno})) {
+                Helper.showMsg("fill");
             } else {
-                Helper.showMsg("error");
+
+                boolean result;
+
+                if (cmb_pension.getSelectedItem().equals("Sadece Oda")) {
+                    total *= 1;
+                } else if (cmb_pension.getSelectedItem().equals("Oda Kahvaltı")) {
+                    total *= 1.1;
+                } else if (cmb_pension.getSelectedItem().equals("Yarım Pansiyon")) {
+                    total *= 1.2;
+                } else if (cmb_pension.getSelectedItem().equals("Tam Pansiyon")) {
+                    total *= 1.3;
+                } else if (cmb_pension.getSelectedItem().equals("Alkolsüz Her Şey Dahil")) {
+                    total *= 1.4;
+                } else if (cmb_pension.getSelectedItem().equals("Her Şey Dahil")) {
+                    total *= 1.5;
+                } else if (cmb_pension.getSelectedItem().equals("Ultra Her Şey Dahil")) {
+                    total *= 1.6;
+                }
+
+                //  System.out.println(total);/////
+
+                //  System.out.println(cmb_pension.getSelectedItem().toString());
+
+      /*       //  if (this.book.getId() !=0){
+                   this.fld_name.setText(this.book.getName());
+                   this.fld_tcno.setText(this.book.getTcno());
+                   this.fld_mail.setText(this.book.getMail());
+                   this.fld_mpno.setText(this.book.getMpno());
+                   this.fld_note.setText(this.book.getNote());
+              // }*/
+
+                book.setRoomId(room.getId());
+                book.setName(fld_name.getText());
+                book.setMail(fld_mail.getText());
+                book.setMpno(fld_mpno.getText());
+                book.setTcno(fld_tcno.getText());
+                book.setPension(cmb_pension.getSelectedItem().toString());
+                book.setStartDate(startDate);
+                book.setFinishDate(finishDate);
+                book.setPrice(total);
+                book.setAdult(adult);
+                book.setChild(child);
+                book.setNote(fld_note.getText());
+
+
+                if (this.book.getId() != 0) {
+                    result = this.bookManager.update(book);
+                } else {
+                    result = this.bookManager.save(book) && this.roomManager.decreaseStock(room);
+                }
+
+                if (result) {
+                    Helper.showMsg("done");
+
+                } else {
+                    Helper.showMsg("error");
+                }
             }
         });
 

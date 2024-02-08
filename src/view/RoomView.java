@@ -1,6 +1,7 @@
 package view;
 
 import business.RoomManager;
+import entity.Book;
 import entity.Hotel;
 
 import javax.swing.*;
@@ -65,7 +66,7 @@ public class RoomView extends Layout {
         this.room_menu.add("Rezerve Et").addActionListener(e -> {
 
             int selecetRoomId = this.getTableSelectedRow(tbl_room, 0);
-            BookView bookView = new BookView(
+            BookView bookView = new BookView( new Book(),
                     this.roomManager.getByID(selecetRoomId),
                     startDate,
                     finishDate,

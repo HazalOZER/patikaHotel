@@ -36,6 +36,8 @@ public class BookManager {
             rowObject[i++] = obj.getPension();
             rowObject[i++] = obj.getStartDate();
             rowObject[i++] = obj.getFinishDate();
+            rowObject[i++] = obj.getAdult();
+            rowObject[i++] = obj.getChild();
             rowObject[i++] = obj.getPrice();
             rowObject[i] = obj.getNote();
 
@@ -53,4 +55,16 @@ public class BookManager {
         return this.bookDao.save(book);
     }
 
+    public Book getById(int id) {
+        return this.bookDao.getById(id);
+    }
+    public boolean delete(int id){
+        return this.bookDao.delete(id);
+    }
+    public  boolean update(Book book){
+        return this.bookDao.update(book);
+    }
+    public int getRoomIdByBookId(int bookId){
+        return this.bookDao.getRoomIdByBookId(bookId);
+    }
 }

@@ -1,7 +1,6 @@
 package business;
 
 import dao.RoomDao;
-import entity.Hotel;
 import entity.Room;
 
 import java.util.ArrayList;
@@ -53,14 +52,14 @@ public class RoomManager {
 
         return roomObjList;
     }
-
     public Room getByID(int id) {
         return this.roomDao.getById(id);
     }
     public boolean save(Room room){
         return this.roomDao.save(room);
     }
-    public boolean stock(Room room){
-        return this.roomDao.stock(room);
+    public boolean decreaseStock(Room room){
+        return this.roomDao.decreaseStock(room);
     }
+    public boolean increaseStock (Room room) {return this.roomDao.increaseStock(room);}
 }
