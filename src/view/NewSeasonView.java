@@ -16,29 +16,28 @@ public class NewSeasonView extends Layout{
     private JFormattedTextField fld_start_date;
     private JFormattedTextField fld_finish_date;
     private JButton btn_save;
-    private JTextField fld_cost;
     private Season season;
     private SeasonManager seasonManager;
 
     public NewSeasonView(Hotel hotel){
-        add(container);
-        guiInitilaze(300,400);
-        seasonManager = new SeasonManager();
-        season = new Season();
-        loadSeasonComponent(hotel);
+        this.add(container);
+        this.guiInitilaze(300,400);
+        this.seasonManager = new SeasonManager();
+        this.season = new Season();
+        this.loadSeasonComponent(hotel);
     }
     public void loadSeasonComponent(Hotel hotel){
-        btn_save.addActionListener(e -> {
+        this.btn_save.addActionListener(e -> {
 
-            if(Helper.isFieldListEmty(new JTextField[]{fld_finish_date,fld_start_date,fld_cost})){
+            if(Helper.isFieldListEmty(new JTextField[]{this.fld_finish_date,this.fld_start_date})){
                 Helper.showMsg("fill");
             }else {
                 this.season.setHotel_id(hotel.getId());
-                this.season.setStart_date((LocalDate.parse(fld_start_date.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()));
-                this.season.setFinish_date((LocalDate.parse(fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()));
-                this.season.setCost(Integer.parseInt(fld_cost.getText()));
+                this.season.setStart_date((LocalDate.parse(this.fld_start_date.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()));
+                this.season.setFinish_date((LocalDate.parse(this.fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()));
+               // this.season.setCost(Integer.parseInt(fld_cost.getText()));
 
-                if(seasonManager.save(season)){
+                if(this.seasonManager.save(season)){
                     Helper.showMsg("done");
                 }else {
                     Helper.showMsg("error");

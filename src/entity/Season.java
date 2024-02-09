@@ -5,7 +5,7 @@ public class Season {
     private int hotel_id;
     private String start_date;
     private String finish_date;
-    private int cost;
+
 
     public Season() {
     }
@@ -42,11 +42,5 @@ public class Season {
         this.finish_date = finish_date;
     }
 
-    public int getCost() {
-        return cost;
-    }
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
 }

@@ -25,15 +25,15 @@ public class SeasonView extends Layout {
         this.season = new Season();
         this.seasonManager = new SeasonManager();
         this.hotel = new Hotel();
-        add(container);
-        guiInitilaze(500, 700);
+        this.add(container);
+        this.guiInitilaze(500, 700);
 
-        loadSeasonTable(hotel);
-        loadSeasonComponent(hotel);
+        this.loadSeasonTable(hotel);
+        this.loadSeasonComponent(hotel);
     }
 
     public void loadSeasonTable(Hotel hotel) {
-        Object[] col_season = {"ID", "Otel ID", "Başlancıç Tarihi", "Bitiş tarihi", "Fiyatlandırma Katı"};
+        Object[] col_season = {"ID", "Otel ID", "Başlancıç Tarihi", "Bitiş tarihi"};
         ArrayList<Object[]> seasonList = this.seasonManager.getForTable(col_season.length, this.seasonManager.findAllByHotelId(hotel.getId()));
         this.createTable(tmdl_season, tbl_season, col_season, seasonList);
     }

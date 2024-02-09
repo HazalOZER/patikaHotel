@@ -1,10 +1,18 @@
 package view;
 
+import business.HotelManager;
+import business.PansionManager;
 import business.RoomManager;
+import business.SeasonManager;
+import core.ComboItem;
 import core.Helper;
+import entity.Hotel;
+import entity.Pansion;
 import entity.Room;
+import entity.Season;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class NewRoomView extends Layout {
     private JPanel container;
@@ -23,22 +31,75 @@ public class NewRoomView extends Layout {
     private JPanel top_pnl;
     private JPanel botton_pnl;
     private JLabel lbl_otel_info;
+    private JComboBox cmb_season;
+    private JComboBox cmb_pension;
     RoomManager roomManager;
+    SeasonManager seasonManager;
+    PansionManager pansionManager;
     Room room;
+    Pansion pansion;
+    Hotel hotel;
+    HotelManager hotelManager;
 
     public NewRoomView(int selectedHotelId) {
         add(container);
         guiInitilaze(600, 500);
         this.roomManager = new RoomManager();
+        this.seasonManager = new SeasonManager();
+        this.pansionManager = new PansionManager();
+        this.hotelManager = new HotelManager();
         this.room = new Room();
+        this.hotel = this.hotelManager.getById(selectedHotelId);
 
+        this.lbl_otel_info.setText("Otel: "+this.hotel.getName());
         this.cmb_room_type.setModel(new DefaultComboBoxModel<>(Room.Type.values()));
 
+
+        for (Season season : this.seasonManager.findAllByHotelId(selectedHotelId)) {
+            this.cmb_season.addItem(new ComboItem(season.getId(),(season.getStart_date()+" & "+season.getFinish_date())));
+        }
+        ArrayList<Pansion> pansions = pansionManager.findAllByHotelId(room.getOtelId());
+
+        this.pansion = pansions.get(0);
+
+
+        if (pansion.isUltraAllInc()) {
+            cmb_pension.addItem("Ultra Her Şey Dahil");
+        }
+        if (pansion.isAllInc()) {
+            cmb_pension.addItem("Her Şey Dahil");
+        }
+        if (pansion.isFullBoard()) {
+            cmb_pension.addItem("Tam Pansiyon");
+        }
+        if (pansion.isHalfBoard()) {
+            cmb_pension.addItem("Yarım Pansiyon");
+        }
+        if (pansion.isFullBoardEAlcohol()) {
+            cmb_pension.addItem("Alkolsüz Her Şey Dahil");
+        }
+        if (pansion.isBedBreakfast()) {
+            cmb_pension.addItem("Oda Kahvaltı");
+        }
+        if (pansion.isOnlyRoom()) {
+            cmb_pension.addItem("Sadece Oda");
+        }
+
+
+
         btn_save.addActionListener(e -> {
+
+
             if (Helper.isFieldListEmty(new JTextField[]{this.fld_stock, this.fld_bed, this.fld_adult_price, this.fld_child_price, this.fld_square_meter})) {
                 Helper.showMsg("fill");
             } else {
 
+                ComboItem selectedSeason = (ComboItem) this.cmb_season.getSelectedItem();
+
+                int seasonId = 0;
+                if (selectedSeason != null){
+                    seasonId = selectedSeason.getKey();
+                }
 
                 this.room.setOtelId(selectedHotelId);
                 this.room.setStock(Integer.parseInt(fld_stock.getText()));
@@ -52,6 +113,8 @@ public class NewRoomView extends Layout {
                 this.room.setTelevision(chk_television.isSelected());
                 this.room.setGameConsole(chk_game_console.isSelected());
                 this.room.setCashCase(chk_cash_case.isSelected());
+                this.room.setSeasonId(seasonId);
+                this.room.setPension(cmb_pension.getSelectedItem().toString());
 
 
                 if (this.roomManager.save(room)) {

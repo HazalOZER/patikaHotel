@@ -67,4 +67,7 @@ public class BookManager {
     public int getRoomIdByBookId(int bookId){
         return this.bookDao.getRoomIdByBookId(bookId);
     }
+    public int getPriceByBookId( int bookId){
+        return  this.bookDao.getPriceByBookId(bookId);
+    }
 }

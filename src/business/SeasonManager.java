@@ -3,6 +3,8 @@ package business;
 import dao.SeasonDao;
 import entity.Season;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SeasonManager {
@@ -30,7 +32,7 @@ public class SeasonManager {
             rowObject[i++] = obj.getHotel_id();
             rowObject[i++] = obj.getStart_date();
             rowObject[i++] = obj.getFinish_date();
-            rowObject[i] = obj.getCost();
+           // rowObject[i] = obj.getCost();
 
             seasonObjList.add(rowObject);
         }
@@ -38,6 +40,9 @@ public class SeasonManager {
     }
     public ArrayList<Season> findAllByHotelId(int hotelId){
         return this.seasonDao.findAllByHotelId(hotelId);
+    }
+    public boolean deleteWithHotel( int hotelId){
+       return this.seasonDao.deleteWithHotel(hotelId);
     }
 
 }

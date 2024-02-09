@@ -5,7 +5,7 @@ import business.HotelManager;
 public class Room {
     private int id;
     private int otelId;
-    private int pansionId;
+
     private int seasonId;
     private Type type;
     private int stock;
@@ -18,6 +18,7 @@ public class Room {
     private boolean gameConsole;
     private boolean cashCase;
     private boolean projection;
+    private String pension;
     private Hotel hotel;
 
     public enum Type {
@@ -48,13 +49,6 @@ public class Room {
         this.otelId = otelId;
     }
 
-    public int getPansionId() {
-        return pansionId;
-    }
-
-    public void setPansionId(int pansionId) {
-        this.pansionId = pansionId;
-    }
 
     public int getSeasonId() {
         return seasonId;
@@ -161,5 +155,13 @@ public class Room {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public String getPension() {
+        return pension;
+    }
+
+    public void setPension(String pension) {
+        this.pension = pension;
     }
 }

@@ -26,7 +26,7 @@ public class SeasonDao {
         obj.setHotel_id(rs.getInt("hotel_id"));
         obj.setStart_date(rs.getString("start_date"));
         obj.setFinish_date(rs.getString("finish_date"));
-        obj.setCost(rs.getInt("cost"));
+
 
 
         return obj;
@@ -46,24 +46,22 @@ public class SeasonDao {
     }
     public boolean save(Season season) {
 
-       // season.setStart_date(LocalDate.parse(season.getStart_date(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
- //      season.setFinish_date(LocalDate.parse(season.getFinish_date(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
 
 
         String query = "INSERT INTO public.season " +
                 "(" +
                 "hotel_id, " +
                 "start_date, " +
-                "finish_date, " +
-                "cost " +
+                "finish_date " +
+
                 ")" +
-                " VALUES (?,?,?,?)";
+                " VALUES (?,?,?)";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setInt(1, season.getHotel_id());
             pr.setDate(2, Date.valueOf(season.getStart_date()));
             pr.setDate(3, Date.valueOf(season.getFinish_date()));
-            pr.setInt(4,season.getCost());
+
 
 
             return pr.executeUpdate() != -1;
@@ -73,4 +71,16 @@ public class SeasonDao {
         return true;
     }
 
+    public boolean deleteWithHotel( int hotelId){
+        String query = "DELETE FROM public.season WHERE hotel_id =? ";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setInt(1, hotelId);
+
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }

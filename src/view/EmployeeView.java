@@ -95,6 +95,8 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelComponent() {
+        this.fld_strt_date.setText("01/01/2024");
+        this.fld_fnsh_date.setText("02/02/2024");
 //Butonlar
 
         btn_new_hotel.addActionListener(e -> {
@@ -130,6 +132,10 @@ public class EmployeeView extends Layout {
         tableRowSelect(this.tbl_hotel);
         this.hotel_menu = new JPopupMenu();
         this.hotel_menu.add("Odalar").addActionListener(e -> {
+            if(Helper.isFieldListEmty(new JTextField[]{fld_strt_date, fld_strt_date })
+            || Integer.parseInt(cmb_adult.getSelectedItem().toString()) == 0){
+                Helper.showMsg("fill");
+            }else{
             RoomView roomView = new RoomView(this.hotelManager.getById(getTableSelectedRow(tbl_hotel, 0)),
                     this.fld_strt_date.getText(),
                     this.fld_fnsh_date.getText(),
@@ -140,7 +146,7 @@ public class EmployeeView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadBookTable();
                 }
-            });
+            });}
         });
         this.hotel_menu.add("Dönemler").addActionListener(e -> {
 
@@ -149,17 +155,17 @@ public class EmployeeView extends Layout {
             SeasonView seasonView = new SeasonView(hotel);
 
         });
-        this.hotel_menu.add("Sil").addActionListener(e -> {
+      /*  this.hotel_menu.add("Sil").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selecetHotelId = this.getTableSelectedRow(tbl_hotel, 0);
-                if (this.hotelManager.delete(selecetHotelId)) {
+                if (this.roomManager.deleteWithHotel(selecetHotelId)&& this.hotelManager.delete(selecetHotelId)) {
                     Helper.showMsg("done");
                     this.loadHotelTable(null);
                 } else {
                     Helper.showMsg("error");
                 }
             }
-        });
+        });*/
 
         this.tbl_hotel.setComponentPopupMenu(this.hotel_menu);
 

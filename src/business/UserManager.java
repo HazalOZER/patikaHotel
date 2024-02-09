@@ -40,14 +40,14 @@ public class UserManager {
         return userDao.save(user);
     }
 
-    public boolean update(User user) {
+    public boolean update(User user,boolean isDifferent) {
 
         if (this.getById(user.getId()) == null) {
             Helper.showMsg(user.getId() + " ID kayıtlı kullanıcı bulunamadı");
             return false;
         }
 
-        if (this.hasUser(user)) {
+        if (this.hasUser(user)&&isDifferent) {
             return false;
         }
 

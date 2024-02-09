@@ -21,6 +21,9 @@ public class RoomManager {
     public ArrayList<Room> findAllByHotelId(int hotelId){
         return this.roomDao.findAllByHotelId(hotelId);
     }
+    public ArrayList<Room> findAvailableRoomByHotelId(int hotelId, String startDate, String finishDate,int adult, int child){
+        return this.roomDao.findAvailableRoomByHotelId(hotelId,startDate,finishDate,adult,child);
+    }
     public ArrayList<Object[]> getForTable(int size, ArrayList<Room> roomList) {
 
         ArrayList<Object[]> roomObjList = new ArrayList<>();
@@ -33,7 +36,7 @@ public class RoomManager {
 
             rowObject[i++] = obj.getId();
             rowObject[i++] = obj.getOtelId();
-            rowObject[i++] = obj.getPansionId();
+            rowObject[i++] = obj.getPension();
             rowObject[i++] = obj.getSeasonId();
             rowObject[i++] = obj.getType().toString();
             rowObject[i++] = obj.getStock();
@@ -62,4 +65,5 @@ public class RoomManager {
         return this.roomDao.decreaseStock(room);
     }
     public boolean increaseStock (Room room) {return this.roomDao.increaseStock(room);}
+    public boolean deleteWithHotel( int hotelId){return this.roomDao.deleteWithHotel(hotelId);}
 }

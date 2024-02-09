@@ -23,7 +23,6 @@ public class BookView extends Layout {
     private JPanel container;
     private JLabel lbl_hotel_info;
     private JLabel lbl_room_info;
-    private JComboBox<String> cmb_pension;
     private JTextField fld_name;
     private JTextField fld_tcno;
     private JTextField fld_mpno;
@@ -72,7 +71,7 @@ public class BookView extends Layout {
 
         //Oda Bilgileri
 
-        String lblRoomInfo = "Oda :" + room.getType().toString() + " Metrekare:" + room.getSquareMeter() + "\n";
+        String lblRoomInfo = "Oda :" + room.getType().toString() + " Metrekare :" + room.getSquareMeter() + "Pansiyon Tipi: " + room.getPension() + "\n";
 
         ArrayList<String> roomInfo = new ArrayList<>();
 
@@ -140,7 +139,7 @@ public class BookView extends Layout {
                 " Yetişkin: " + adult +
                 " Çocuk: " + child);
 
-
+/*
         this.pansionManager = new PansionManager();
 
         ArrayList<Pansion> pansions = pansionManager.findAllByHotelId(room.getOtelId());
@@ -169,6 +168,7 @@ public class BookView extends Layout {
         if (pansion.isOnlyRoom()) {
             cmb_pension.addItem("Sadece Oda");
         }
+*/
 
 
         //Kaydetme
@@ -179,15 +179,20 @@ public class BookView extends Layout {
             LocalDate first = LocalDate.parse(startDate, formatter);
             LocalDate last = LocalDate.parse(finishDate, formatter);
             dateNum = (int) ChronoUnit.DAYS.between(first, last);
+
+            this.total = ((room.getAdultPrice() * adult) +
+                    (room.getChildPrice() * child)) * dateNum;
+            lbl_price_info.setText("Fiyat: " + total);
+
+        }else {
+            lbl_price_info.setText("Fiyat: " + this.bookManager.getPriceByBookId(book.getId()));
         }
 
 
-        this.total = ((room.getAdultPrice() * adult) +
-                (room.getChildPrice() * child)) * room.getHotel().getSeason().getCost() * dateNum;
 
 
         //Fiyat bilgisi
-        ArrayList<String> priceInfo = new ArrayList<>();
+       /* ArrayList<String> priceInfo = new ArrayList<>();
         if (pansion.isUltraAllInc()) {
             priceInfo.add("Ultra Her Şey Dahil: " + (total * 1.6));
         }
@@ -211,7 +216,13 @@ public class BookView extends Layout {
         }
         String priceAllInfo = String.join(", ", priceInfo);
 
-        lbl_price_info.setText(priceAllInfo);
+        lbl_price_info.setText(priceAllInfo);*/
+/*
+        if (book.getId() != 0) {
+            lbl_price_info.setText("Fiyat: " + this.bookManager.getPriceByBookId(book.getId()));
+        } else {
+            lbl_price_info.setText("Fiyat: " + total);
+        }*/
 
         btn_book.addActionListener(e -> {
 
@@ -221,7 +232,7 @@ public class BookView extends Layout {
 
                 boolean result;
 
-                if (cmb_pension.getSelectedItem().equals("Sadece Oda")) {
+             /*   if (cmb_pension.getSelectedItem().equals("Sadece Oda")) {
                     total *= 1;
                 } else if (cmb_pension.getSelectedItem().equals("Oda Kahvaltı")) {
                     total *= 1.1;
@@ -235,7 +246,7 @@ public class BookView extends Layout {
                     total *= 1.5;
                 } else if (cmb_pension.getSelectedItem().equals("Ultra Her Şey Dahil")) {
                     total *= 1.6;
-                }
+                }*/
 
                 //  System.out.println(total);/////
 
@@ -254,7 +265,7 @@ public class BookView extends Layout {
                 book.setMail(fld_mail.getText());
                 book.setMpno(fld_mpno.getText());
                 book.setTcno(fld_tcno.getText());
-                book.setPension(cmb_pension.getSelectedItem().toString());
+                book.setPension(room.getPension());
                 book.setStartDate(startDate);
                 book.setFinishDate(finishDate);
                 book.setPrice(total);

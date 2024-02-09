@@ -7,7 +7,7 @@
   -Otel listeleme ekleme,
   -Dönem listeleme ekleme,
   -Oda listeleme ekleme,
-  -rezervasyon listeleme ve ekleme yapabiliyor
+  -rezervasyon listeleme, ekleme, güncelleme, silme yapabiliyor
 
   ## Projenin anlatıldığı videoya aşağıdaki loom linkinden ulaşabilirsiniz
 

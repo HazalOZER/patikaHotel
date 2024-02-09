@@ -129,35 +129,26 @@ public class BookDao {
     }
 
     public boolean update(Book book) {
+
+
         String query = "UPDATE public.book SET " +
-                "room_id = ? , " +
+
                 "name = ? , " +
                 "mail = ? ," +
                 "mpno = ? ," +
                 "tcno = ? ," +
-                "note = ? ," +
-                "pension = ? ," +
-                "start_date = ? ," +
-                "finish_date = ? ," +
-                "price = ? ," +
-                "adult = ? ," +
-                "child = ? " +
+                "note = ? " +
 
                 "WHERE id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
-            pr.setInt(1, book.getRoomId());
-            pr.setString(2, book.getName());
-            pr.setString(3, book.getMail());
-            pr.setString(4, book.getMpno());
-            pr.setString(5, book.getTcno());
-            pr.setString(6, book.getNote());
-            pr.setString(7, book.getPension());
-            pr.setString(8, book.getStartDate());
-            pr.setString(9, book.getFinishDate());
-            pr.setDouble(10, book.getPrice());
-            pr.setInt(11, book.getAdult());
-            pr.setInt(12, book.getChild());
+
+            pr.setString(1, book.getName());
+            pr.setString(2, book.getMail());
+            pr.setString(3, book.getMpno());
+            pr.setString(4, book.getTcno());
+            pr.setString(5, book.getNote());
+            pr.setInt(6,book.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,5 +168,18 @@ public class BookDao {
             e.printStackTrace();
         }
         return roomID;
+    }
+    public int getPriceByBookId(int bookId){
+        String query = "SELECT price FROM public.book WHERE id = "+bookId;
+        int price =0;
+        try {
+            ResultSet rs = this.con.createStatement().executeQuery(query);
+            if (rs.next()) {
+                price = rs.getInt("price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return price;
     }
 }

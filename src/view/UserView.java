@@ -19,7 +19,7 @@ public class UserView extends Layout {
 
     public UserView(User user) {
         this.user = user;
-        userManager = new UserManager();
+        this.userManager = new UserManager();
         this.add(container);
         this.guiInitilaze(300, 300);
 
@@ -39,12 +39,16 @@ public class UserView extends Layout {
 
                 boolean result;
 
+                boolean isDifferent = true ;
+                if(user.getId()!=0 &&user.getUsername().equals(fld_username.getText())){
+                    isDifferent=false;
+                }
                 this.user.setUsername(fld_username.getText());
                 this.user.setPassword(fld_pass.getText());
                 this.user.setRole((User.Role) cmb_role.getSelectedItem());
 
                 if (this.user.getId() !=0){
-                result = this.userManager.update(user);
+                result = this.userManager.update(user,isDifferent);
                 }else {
                     result =this.userManager.save(user);
                 }
