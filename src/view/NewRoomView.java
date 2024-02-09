@@ -42,8 +42,8 @@ public class NewRoomView extends Layout {
     HotelManager hotelManager;
 
     public NewRoomView(int selectedHotelId) {
-        add(container);
-        guiInitilaze(600, 500);
+        this.add(container);
+        this.guiInitilaze(600, 500);
         this.roomManager = new RoomManager();
         this.seasonManager = new SeasonManager();
         this.pansionManager = new PansionManager();
@@ -107,7 +107,7 @@ public class NewRoomView extends Layout {
                 this.room.setAdultPrice(Integer.parseInt(fld_adult_price.getText()));
                 this.room.setChildPrice(Integer.parseInt(fld_child_price.getText()));
                 this.room.setSquareMeter(Integer.parseInt(fld_square_meter.getText()));
-                this.room.setType((Room.Type) cmb_room_type.getSelectedItem());////////////////////////////
+                this.room.setType((Room.Type) cmb_room_type.getSelectedItem());
                 this.room.setProjection(chk_projection.isSelected());
                 this.room.setMinibar(chk_minibar.isSelected());
                 this.room.setTelevision(chk_television.isSelected());

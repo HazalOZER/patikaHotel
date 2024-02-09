@@ -96,7 +96,7 @@ public class EmployeeView extends Layout {
 
     public void loadHotelComponent() {
         this.fld_strt_date.setText("01/01/2024");
-        this.fld_fnsh_date.setText("02/02/2024");
+        this.fld_fnsh_date.setText("02/01/2024");
 //Butonlar
 
         btn_new_hotel.addActionListener(e -> {
